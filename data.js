@@ -8,8 +8,8 @@ window.PORTFOLIO_DATA = {
     label: "INTERVIEW PORTFOLIO · 2026",
     tagline: "Agent Harness × Agent Memory",
     summary:
-      "电子科技大学计算机硕士｜聚焦 Agent Runtime、长期记忆、自动化评测与 Context Engineering",
-    github: "https://github.com/KEDADA",
+      "电子科技大学计算机硕士｜聚焦 Agent Harness、长期记忆、自动化评测",
+    github: "https://github.com/KEDADA?tab=repositories",
     email: "wangketing0513@163.com",
     phone: "18358268740",
   },
