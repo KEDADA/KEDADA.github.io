@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+
+# 仅作为网站内容来源保留在本地，不推送原始简历工程
+汪柯廷_Overleaf_简历项目/
