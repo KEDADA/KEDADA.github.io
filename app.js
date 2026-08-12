@@ -1,186 +1,167 @@
 (() => {
   "use strict";
-
   const data = window.PORTFOLIO_DATA;
   if (!data) return;
 
-  const qs = (selector, root = document) => root.querySelector(selector);
-  const el = (tag, className, text) => {
-    const node = document.createElement(tag);
-    if (className) node.className = className;
-    if (text !== undefined) node.textContent = text;
-    return node;
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const node = (tag, className, text) => {
+    const item = document.createElement(tag);
+    if (className) item.className = className;
+    if (text !== undefined) item.textContent = text;
+    return item;
   };
 
-  const profile = data.profile;
-  qs("#eyebrow-text").textContent = profile.label;
-  qs("#hero-name").textContent = profile.name;
-  qs("#hero-tagline").textContent = profile.tagline;
-  qs("#hero-summary").textContent = profile.summary;
-  qs("#github-link").href = profile.github;
-  qs("#footer-github").href = profile.github;
-  qs("#email-link").href = `mailto:${profile.email}`;
-  qs("#phone-link").href = `tel:${profile.phone}`;
-  qs("#copyright-year").textContent = new Date().getFullYear();
+  const escapeHtml = (value = "") => String(value).replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char]);
 
-  const metricsRoot = qs("#hero-metrics");
-  data.metrics.forEach((metric) => {
-    const card = el("article", "metric-card");
-    card.append(
-      el("p", "metric-value", metric.value),
-      el("p", "metric-label", metric.label),
-      el("p", "metric-note", metric.note),
-    );
-    metricsRoot.append(card);
+  $("#profile-label").textContent = data.profile.label;
+  $("#hero-title").textContent = data.profile.name;
+  $("#profile-tagline").textContent = data.profile.tagline;
+  $("#profile-summary").textContent = data.profile.summary;
+  $("#github-link").href = data.profile.github;
+  $("#email-link").href = `mailto:${data.profile.email}`;
+  $("#email-text").textContent = data.profile.email;
+  $("#phone-link").href = `tel:${data.profile.phone}`;
+  $("#phone-text").textContent = data.profile.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1 $2 $3");
+  $("#copyright-year").textContent = new Date().getFullYear();
+
+  const detailsById = new Map(data.timeline.map((item) => [item.id, item]));
+  const proofGrid = $("#proof-grid");
+  data.proof.forEach((proof) => {
+    const card = node("button", `proof-card tone-${proof.tone}`);
+    card.type = "button";
+    card.setAttribute("aria-label", `查看 ${proof.label} 详情`);
+    card.innerHTML = `<small>${escapeHtml(proof.label)}</small><strong>${escapeHtml(proof.value)}</strong><span>${escapeHtml(proof.title)}</span><p>${escapeHtml(proof.note)}</p>`;
+    card.addEventListener("click", () => openDetail(detailsById.get(proof.target)));
+    proofGrid.append(card);
   });
 
-  const filtersRoot = qs("#filters");
-  const timelineRoot = qs("#timeline-list");
   let activeFilter = "all";
-
-  function categoryFor(id) {
-    return data.filters.find((filter) => filter.id === id);
-  }
-
-  function metricNodes(metrics, compact = false) {
-    const fragment = document.createDocumentFragment();
-    metrics.forEach((metric) => {
-      const box = el("div", compact ? "mini-metric compact" : "mini-metric");
-      box.append(el("strong", "", metric.value), el("span", "", metric.label));
-      fragment.append(box);
-    });
-    return fragment;
-  }
-
-  function renderTimeline() {
-    timelineRoot.replaceChildren();
-    const items = data.timeline.filter(
-      (item) => activeFilter === "all" || item.category === activeFilter,
-    );
-
-    items.forEach((item, index) => {
-      const category = categoryFor(item.category);
-      const li = el("li", `timeline-item ${index % 2 ? "timeline-left" : "timeline-right"}`);
-      li.dataset.category = item.category;
-
-      const dot = el("span", "timeline-dot");
-      dot.setAttribute("aria-hidden", "true");
-
-      const button = el("button", "timeline-card");
-      button.type = "button";
-      button.setAttribute("aria-label", `查看 ${item.title} 详情`);
-
-      const top = el("div", "card-topline");
-      const date = el("span", "card-date", item.date);
-      const type = el("span", "card-type", `${category.icon ? `${category.icon} ` : ""}${category.label}`);
-      top.append(date, type);
-      if (item.badge) top.append(el("span", "card-badge", item.badge));
-
-      button.append(
-        top,
-        el("h3", "", item.title),
-        el("p", "card-org", item.organization),
-        el("p", "card-description", item.description),
-      );
-
-      const metrics = el("div", "mini-metrics");
-      metrics.append(metricNodes(item.metrics));
-      button.append(metrics, el("span", "card-arrow", "↗"));
-      button.addEventListener("click", () => openModal(item));
-
-      li.append(dot, button);
-      timelineRoot.append(li);
-    });
-
-    observeReveals();
-  }
+  const filters = $("#filters");
+  const timeline = $("#timeline-list");
 
   data.filters.forEach((filter, index) => {
-    const button = el("button", `filter-button${index === 0 ? " is-active" : ""}`);
+    const button = node("button", `filter-tab${index === 0 ? " is-active" : ""}`, filter.label);
     button.type = "button";
-    button.role = "tab";
+    button.setAttribute("role", "tab");
     button.setAttribute("aria-selected", String(index === 0));
-    button.textContent = `${filter.icon ? `${filter.icon} ` : ""}${filter.label}`;
     button.addEventListener("click", () => {
       activeFilter = filter.id;
-      filtersRoot.querySelectorAll("button").forEach((node) => {
-        const selected = node === button;
-        node.classList.toggle("is-active", selected);
-        node.setAttribute("aria-selected", String(selected));
+      filters.querySelectorAll("button").forEach((tab) => {
+        const selected = tab === button;
+        tab.classList.toggle("is-active", selected);
+        tab.setAttribute("aria-selected", String(selected));
       });
       renderTimeline();
     });
-    filtersRoot.append(button);
+    filters.append(button);
   });
 
-  const modal = qs("#detail-modal");
-  const modalClose = qs(".modal-close", modal);
-
-  function openModal(item) {
-    const category = categoryFor(item.category);
-    qs("#modal-meta").textContent = `${item.date} · ${category.icon || ""} ${category.label}${item.badge ? ` · ${item.badge}` : ""}`;
-    qs("#modal-title").textContent = item.title;
-    qs("#modal-org").textContent = item.organization;
-    qs("#modal-description").textContent = item.description;
-
-    const metrics = qs("#modal-metrics");
-    metrics.replaceChildren();
-    metrics.append(metricNodes(item.metrics, true));
-
-    const details = qs("#modal-details");
-    details.replaceChildren();
-    item.details.forEach((detail) => details.append(el("li", "", detail)));
-
-    modal.showModal();
-    document.body.classList.add("modal-open");
-  }
-
-  function closeModal() {
-    modal.close();
-    document.body.classList.remove("modal-open");
-  }
-
-  modalClose.addEventListener("click", closeModal);
-  modal.addEventListener("click", (event) => {
-    if (event.target === modal) closeModal();
-  });
-  modal.addEventListener("close", () => document.body.classList.remove("modal-open"));
-
-  const skillsRoot = qs("#skills-grid");
-  data.skills.forEach((group) => {
-    const card = el("article", "stack-card");
-    card.append(el("h3", "", group.title));
-    const list = el("ul");
-    group.items.forEach((item) => list.append(el("li", "", item)));
-    card.append(list);
-    skillsRoot.append(card);
-  });
-
-  const achievementRoot = qs("#achievement-grid");
-  data.achievements.forEach((achievement) => {
-    const item = el("div", "achievement-item");
-    item.append(el("span", "achievement-icon", achievement.icon), el("span", "", achievement.text));
-    achievementRoot.append(item);
-  });
-
-  let revealObserver;
-  function observeReveals() {
-    if (!revealObserver) {
-      revealObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              revealObserver.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12 },
-      );
+  const miniMarkup = (item) => {
+    if (item.mini === "evo") {
+      return `<div class="evo-loop-mini" aria-label="EvoWork 自改进闭环">
+        <span><b>评测驱动</b>固定任务集</span><span><b>失败归因</b>轨迹分析</span>
+        <span><b>技能进化</b>生成提案</span><span><b>回归门控</b>沙箱验证</span>
+      </div>`;
     }
-    document.querySelectorAll(".reveal-on-scroll, .timeline-item:not(.is-visible)").forEach((node) =>
-      revealObserver.observe(node),
-    );
+    if (item.mini === "architecture") {
+      return `<div class="architecture-mini" aria-label="learn-workbuddy 架构">
+        <span><b>Loop</b>有界运行</span><i></i><span><b>Memory</b>分层恢复</span><i></i><span><b>RAG</b>检索回归</span>
+      </div>`;
+    }
+    return "";
+  };
+
+  const compactMetrics = (metrics = []) => metrics.length
+    ? `<div class="compact-metrics${metrics.length === 3 ? " compact-metrics-three" : ""}">${metrics.map((metric) => `<span><b>${escapeHtml(metric.value)}</b>${escapeHtml(metric.label)}</span>`).join("")}</div>`
+    : "";
+
+  function renderTimeline() {
+    timeline.replaceChildren();
+    data.timeline.filter((item) => activeFilter === "all" || item.kind === activeFilter).forEach((item) => {
+      const entry = node("li", "timeline-item reveal-on-scroll");
+      entry.dataset.kind = item.kind;
+      if (item.id === "evowork") entry.id = "opensource";
+      const dot = node("span", "timeline-dot");
+      dot.setAttribute("aria-hidden", "true");
+      const card = node("button", `timeline-card${item.mini ? ` ${item.mini}-card` : ""}`);
+      card.type = "button";
+      card.setAttribute("aria-label", `查看 ${item.title} 详情`);
+      card.innerHTML = `
+        <div class="card-topline"><span>${escapeHtml(item.date)}</span><span class="category-pill">${escapeHtml(item.category)}</span></div>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p class="card-subtitle">${escapeHtml(item.subtitle)}</p>
+        <p>${escapeHtml(item.lead)}</p>
+        ${miniMarkup(item)}
+        ${item.mini === "evo" ? compactMetrics(item.metrics) : ""}
+        <div class="topic-row">${item.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
+        <span class="entry-more">查看${item.kind === "opensource" ? "系统设计与评测结果" : "完整详情"} <span aria-hidden="true">↗</span></span>`;
+      card.addEventListener("click", () => openDetail(item));
+      entry.append(dot, card);
+      timeline.append(entry);
+    });
+    observeReveals();
+  }
+
+  data.skills.forEach((skill) => {
+    const card = node("article");
+    card.innerHTML = `<p>${escapeHtml(skill.eyebrow)}</p><h3>${escapeHtml(skill.title)}</h3><ul>${skill.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+    $("#skills-grid").append(card);
+  });
+
+  data.achievements.forEach((achievement) => {
+    const item = node("span");
+    item.innerHTML = `<i>${escapeHtml(achievement.label)}</i>${escapeHtml(achievement.text)}`;
+    $("#achievement-grid").append(item);
+  });
+
+  const backdrop = $("#detail-backdrop");
+  const modal = $("#detail-modal");
+  const content = $("#detail-content");
+  const closeButton = $(".modal-close");
+  let returnFocus = null;
+
+  const flowMarkup = (items = []) => items.length ? `<section class="detail-section"><h3>系统链路</h3><div class="detail-flow">${items.map((item) => `<div class="flow-step${item.accent ? " is-accent" : ""}"><b>${escapeHtml(item.title)}</b><span>${escapeHtml(item.text)}</span></div>`).join("")}</div></section>` : "";
+  const metricsMarkup = (items = []) => items.length ? `<section class="detail-section detail-results"><h3>核心指标</h3><div class="detail-metrics">${items.map((item) => `<div class="detail-metric"><strong>${escapeHtml(item.value)}</strong><span>${escapeHtml(item.label)}</span></div>`).join("")}</div></section>` : "";
+  const listMarkup = (title, items = []) => items.length ? `<section class="detail-section"><h3>${title}</h3><ol class="detail-list">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol></section>` : "";
+
+  function openDetail(item) {
+    if (!item) return;
+    returnFocus = document.activeElement;
+    content.innerHTML = `
+      <header class="detail-head"><p class="entry-meta">${escapeHtml(item.category)} · ${escapeHtml(item.date)}</p><h2 id="detail-title">${escapeHtml(item.title)}</h2><p>${escapeHtml(item.subtitle)}</p></header>
+      <div class="detail-body">
+        <div class="detail-intro"><p>${escapeHtml(item.lead)}</p><div class="detail-tags">${item.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div></div>
+        ${metricsMarkup(item.metrics)}
+        <section class="detail-overview"><article class="detail-context"><h3>背景与痛点</h3><p>${escapeHtml(item.background)}</p></article><article class="detail-context detail-role"><h3>我的角色</h3><strong>${escapeHtml(item.role)}</strong></article></section>
+        ${flowMarkup(item.flow)}
+        ${listMarkup("核心工作", item.contributions)}
+        ${listMarkup("设计方法", item.approach)}
+        ${item.link ? `<section class="detail-section"><a class="detail-link" href="${escapeHtml(item.link.url)}" target="_blank" rel="noreferrer">${escapeHtml(item.link.label)} ↗</a></section>` : ""}
+      </div>`;
+    backdrop.hidden = false;
+    document.body.classList.add("modal-open");
+    requestAnimationFrame(() => { backdrop.classList.add("is-open"); modal.focus(); });
+  }
+
+  function closeDetail() {
+    backdrop.classList.remove("is-open");
+    document.body.classList.remove("modal-open");
+    setTimeout(() => { backdrop.hidden = true; if (returnFocus) returnFocus.focus(); }, 180);
+  }
+  closeButton.addEventListener("click", closeDetail);
+  backdrop.addEventListener("click", (event) => { if (event.target === backdrop) closeDetail(); });
+  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !backdrop.hidden) closeDetail(); });
+
+  let observer;
+  function observeReveals() {
+    if (!("IntersectionObserver" in window)) {
+      document.querySelectorAll(".reveal-on-scroll").forEach((item) => item.classList.add("is-visible"));
+      return;
+    }
+    if (!observer) observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting) { entry.target.classList.add("is-visible"); observer.unobserve(entry.target); }
+    }), { threshold: 0.1 });
+    document.querySelectorAll(".reveal-on-scroll:not(.is-visible)").forEach((item) => observer.observe(item));
   }
 
   renderTimeline();
