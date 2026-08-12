@@ -87,14 +87,14 @@
       card.type = "button";
       card.setAttribute("aria-label", `查看 ${item.title} 详情`);
       card.innerHTML = `
-        <div class="card-topline"><span>${escapeHtml(item.date)}</span><span class="category-pill">${escapeHtml(item.category)}</span></div>
+        <div class="card-topline"><span>${escapeHtml(item.cardDate || item.date)}</span><span class="category-pill">${escapeHtml(item.cardCategory || item.category)}</span></div>
         <h3>${escapeHtml(item.title)}</h3>
-        <p class="card-subtitle">${escapeHtml(item.subtitle)}</p>
+        <p class="card-subtitle">${escapeHtml(item.cardSubtitle || item.subtitle)}</p>
         <p>${escapeHtml(item.lead)}</p>
         ${miniMarkup(item)}
-        ${item.mini === "evo" ? compactMetrics(item.metrics) : ""}
-        <div class="topic-row">${item.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
-        <span class="entry-more">查看${item.kind === "opensource" ? "系统设计与评测结果" : "完整详情"} <span aria-hidden="true">↗</span></span>`;
+        ${item.mini === "evo" ? compactMetrics(item.cardMetrics || item.metrics) : ""}
+        <div class="topic-row">${(item.cardTags || item.tags).map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
+        <span class="entry-more">${escapeHtml(item.cardMore || (item.kind === "opensource" ? "查看系统设计与评测结果" : "查看完整详情"))} <span aria-hidden="true">↗</span></span>`;
       card.addEventListener("click", () => openDetail(item));
       entry.append(dot, card);
       timeline.append(entry);
@@ -123,19 +123,22 @@
   const flowMarkup = (items = []) => items.length ? `<section class="detail-section"><h3>系统链路</h3><div class="detail-flow">${items.map((item) => `<div class="flow-step${item.accent ? " is-accent" : ""}"><b>${escapeHtml(item.title)}</b><span>${escapeHtml(item.text)}</span></div>`).join("")}</div></section>` : "";
   const metricsMarkup = (items = []) => items.length ? `<section class="detail-section detail-results"><h3>核心指标</h3><div class="detail-metrics">${items.map((item) => `<div class="detail-metric"><strong>${escapeHtml(item.value)}</strong><span>${escapeHtml(item.label)}</span></div>`).join("")}</div></section>` : "";
   const listMarkup = (title, items = []) => items.length ? `<section class="detail-section"><h3>${title}</h3><ol class="detail-list">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol></section>` : "";
+  const starMarkup = (star) => star ? `<section class="detail-section"><h3>STAR 提炼</h3><div class="star-grid">${Object.entries(star).map(([key, value]) => `<article class="star-card"><div class="star-card-head"><b>${key}</b><span>${({ S: "背景", T: "任务", A: "行动", R: "结果" })[key]}</span></div><p>${escapeHtml(value)}</p></article>`).join("")}</div></section>` : "";
 
   function openDetail(item) {
     if (!item) return;
     returnFocus = document.activeElement;
     content.innerHTML = `
-      <header class="detail-head"><p class="entry-meta">${escapeHtml(item.category)} · ${escapeHtml(item.date)}</p><h2 id="detail-title">${escapeHtml(item.title)}</h2><p>${escapeHtml(item.subtitle)}</p></header>
+      <header class="detail-head"><p class="entry-meta">${escapeHtml(item.meta || `${item.category} · ${item.date}`)}</p><h2 id="detail-title">${escapeHtml(item.title)}</h2><p>${escapeHtml(item.subtitle)}</p></header>
       <div class="detail-body">
         <div class="detail-intro"><p>${escapeHtml(item.lead)}</p><div class="detail-tags">${item.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div></div>
         ${metricsMarkup(item.metrics)}
         <section class="detail-overview"><article class="detail-context"><h3>背景与痛点</h3><p>${escapeHtml(item.background)}</p></article><article class="detail-context detail-role"><h3>我的角色</h3><strong>${escapeHtml(item.role)}</strong></article></section>
         ${flowMarkup(item.flow)}
-        ${listMarkup("核心工作", item.contributions)}
-        ${listMarkup("设计方法", item.approach)}
+        ${listMarkup(item.kind === "education" ? "主要经历" : "技术方案", item.contributions)}
+        ${listMarkup(item.kind === "education" ? "能力沉淀" : "实现要点", item.approach)}
+        ${starMarkup(item.star)}
+        ${item.tradeoff ? `<section class="detail-section"><h3>技术权衡</h3><blockquote class="detail-quote">${escapeHtml(item.tradeoff)}</blockquote></section>` : ""}
         ${item.link ? `<section class="detail-section"><a class="detail-link" href="${escapeHtml(item.link.url)}" target="_blank" rel="noreferrer">${escapeHtml(item.link.label)} ↗</a></section>` : ""}
       </div>`;
     backdrop.hidden = false;
