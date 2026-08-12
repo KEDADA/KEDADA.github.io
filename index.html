@@ -9,10 +9,10 @@
   <title>汪柯廷 · Agent 工程作品集</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
-<body>
+<body class="theme-agent">
   <a class="skip-link" href="#main">跳到主要内容</a>
 
   <header class="site-header" aria-label="主导航">
@@ -27,41 +27,196 @@
 
   <main id="main">
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <div class="hero-copy reveal">
-        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span><span id="profile-label"></span></p>
-        <h1 id="hero-title"></h1>
-        <p class="hero-role" id="profile-tagline"></p>
-        <p class="hero-intro" id="profile-summary"></p>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>求职作品集 · 2026</p>
+        <h1 id="hero-title">汪柯廷</h1>
+        <p class="hero-role">Agent 工程 <span aria-hidden="true">×</span> Harness &amp; Memory</p>
+        <p class="hero-intro">电子科技大学计算机硕士｜聚焦 Agent Harness、长期记忆、自动化评测</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#timeline">探索经历与作品 <span aria-hidden="true">↓</span></a>
           <a class="button button-secondary" href="#opensource">开源项目 <span aria-hidden="true">↓</span></a>
         </div>
       </div>
 
-      <div class="proof-wrap reveal reveal-delay" aria-label="代表性成果">
-        <div class="proof-grid" id="proof-grid"></div>
+      <div class="proof-wrap" aria-label="代表性成果">
+        <span class="trace-label" aria-hidden="true">EVIDENCE TRACE</span>
+        <div class="proof-grid">
+          <article class="proof-card">
+            <small>车载长期记忆</small>
+            <strong>98.9%</strong>
+            <span>任务通过率</span>
+            <p>结构化画像 · 取证式更新 · 混合检索</p>
+          </article>
+          <a class="proof-card proof-card-link" href="#opensource" aria-label="查看 EvoWork 开源项目">
+            <small>EvoWork · Skills Evolution</small>
+            <strong>52→80%</strong>
+            <span>任务成功率</span>
+            <p>6 轮进化 · 60 Case 隔离门控 · 点击查看</p>
+          </a>
+          <article class="proof-card">
+            <small>并发路由</small>
+            <strong>−54%</strong>
+            <span>典型请求耗时</span>
+            <p>3.2s → 1.45s · 99% 路由准确率</p>
+          </article>
+          <a class="proof-card proof-card-link" href="#work" aria-label="查看 AI News 项目">
+            <small>AI News</small>
+            <strong>223</strong>
+            <span>订阅用户</span>
+            <p>178 DAU · Precision@10 0.72 → 0.86</p>
+          </a>
+        </div>
       </div>
       <a class="scroll-cue" href="#timeline">Scroll <span aria-hidden="true">↓</span></a>
     </section>
 
     <section class="timeline-section" id="timeline" aria-labelledby="timeline-title">
-      <header class="timeline-heading reveal-on-scroll">
-        <p class="section-kicker">Journey &amp; Work</p>
+      <header class="timeline-heading reveal">
+        <p class="section-kicker">Journey & Work</p>
         <h2 id="timeline-title">经历与作品</h2>
-        <p>沿着学习、工程实践、研究与开源，一次看清我的 Agent 工程路径。</p>
+        <p>沿着学习、业务实践、研究与开源，一次看清我的 Agent 工程路径。</p>
       </header>
-      <div class="filter-tabs reveal-on-scroll" id="filters" role="tablist" aria-label="按类型筛选"></div>
-      <ol class="timeline-list" id="timeline-list" aria-label="经历与作品时间轴"></ol>
+
+      <div class="filter-tabs reveal" role="tablist" aria-label="按类型筛选">
+        <button class="filter-tab is-active" type="button" role="tab" aria-selected="true" data-filter="all">全部</button>
+        <button class="filter-tab" type="button" role="tab" aria-selected="false" data-filter="education">教育</button>
+        <button class="filter-tab" type="button" role="tab" aria-selected="false" data-filter="work">实习经历</button>
+        <button class="filter-tab" type="button" role="tab" aria-selected="false" data-filter="research">研究论文</button>
+        <button class="filter-tab" type="button" role="tab" aria-selected="false" data-filter="opensource">开源项目</button>
+        <button class="filter-tab" type="button" role="tab" aria-selected="false" data-filter="project">个人项目</button>
+      </div>
+
+      <ol class="timeline-list" aria-label="经历与作品时间轴">
+        <li class="timeline-item reveal" data-kind="education" id="education">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <button class="timeline-card" type="button" data-detail="ustb" aria-label="查看浙江财经大学教育经历详情">
+            <div class="card-topline"><span>2020.09—2024.06</span><span class="category-pill">教育 · 本科</span></div>
+            <h3>浙江财经大学</h3>
+            <p class="card-subtitle">软件工程 · 全日制</p>
+            <p>以软件工程与 AI 实践为起点，完成系统训练并持续探索智能应用开发。</p>
+            <div class="topic-row"><span>软件工程</span><span>AI 应用</span><span>工程基础</span></div>
+            <span class="entry-more">查看教育经历 <span aria-hidden="true">↗</span></span>
+          </button>
+        </li>
+
+        <li class="timeline-item reveal" data-kind="education">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <button class="timeline-card" type="button" data-detail="zju" aria-label="查看电子科技大学教育经历详情">
+            <div class="card-topline"><span>2024.09—2027.06</span><span class="category-pill">教育 · 硕士</span></div>
+            <h3>电子科技大学</h3>
+            <p class="card-subtitle">计算机科学与技术 · 全日制</p>
+            <p>围绕 Agent Harness、Agent Memory 与 RAG 评测体系开展研究和工程实践。</p>
+            <div class="topic-row"><span>Agent Harness</span><span>Agent Memory</span><span>Context Engineering</span></div>
+            <span class="entry-more">查看学习与研究 <span aria-hidden="true">↗</span></span>
+          </button>
+        </li>
+
+        <li class="timeline-item reveal" data-kind="work" id="work">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <article class="timeline-card company-card">
+            <div class="card-topline"><span>2026.03—2026.08</span><span class="category-pill">实习经历</span></div>
+            <h3>大疆车载 · 智研软件部</h3>
+            <p class="card-subtitle">大模型 Agent 应用实习生</p>
+            <p>围绕车载智能座舱，推进长期记忆、自动化评测、并发路由与智能资讯实践。</p>
+            <div class="company-projects">
+              <button class="company-project project-primary" type="button" data-detail="diagnosis" aria-label="查看出境订单排障 Agent 详情">
+                <span>主项目 · Cockpit Agent</span>
+                <strong>AI 座舱 Agent 系统</strong>
+                <p>长期记忆、自动化评测、并发路由与导航模块。</p>
+                <div class="project-stats"><b>98.9% Memory</b><b>99% Routing</b><b>−54% Latency</b></div>
+              </button>
+              <button class="company-project" type="button" data-detail="knowledge" aria-label="查看出境业务与代码仓库知识库详情">
+                <span>相关实践 · AI News</span>
+                <strong>智能资讯系统</strong>
+                <p>多源采集 → 分级路由 → 个性化精选与飞书推送。</p>
+              </button>
+              <button class="company-project" type="button" data-detail="research-skill" aria-label="查看需求调研 Skill 详情">
+                <span>个人项目 · GraphRAG</span>
+                <strong>GraphRAG + DeepSearch</strong>
+                <p>知识图谱、多级检索与多智能体编排。</p>
+              </button>
+            </div>
+          </article>
+        </li>
+
+        <li class="timeline-item reveal" data-kind="research" id="research">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <button class="timeline-card paper-timeline-card" type="button" data-detail="memoworld" aria-label="查看 AHEAD 论文详情">
+            <div class="card-topline"><span>AAAI 2027 在投</span><span class="category-pill">研究论文 · 一作</span></div>
+            <h3>AHEAD</h3>
+            <p class="card-subtitle paper-name">Efficient Adversarial Detection from Frozen Vision Transformer Attention Heads</p>
+            <p>从冻结 Vision Transformer 的注意力头中提取高效的对抗样本检测信号。</p>
+            <div class="compact-metrics"><span><b>AAAI</b> 目标会议</span><span><b>一作</b> 作者顺位</span></div>
+            <span class="entry-more">摘要、方法与实验 <span aria-hidden="true">↗</span></span>
+          </button>
+        </li>
+
+        <li class="timeline-item reveal" data-kind="project">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <button class="timeline-card" type="button" data-detail="rvd" aria-label="查看 GraphRAG 项目详情">
+            <div class="card-topline"><span>2025.10—2026.02</span><span class="category-pill">个人项目</span></div>
+            <h3>GraphRAG + DeepSearch</h3>
+            <p class="card-subtitle">跨文档问答 · Multi-Agent</p>
+            <p>用知识图谱、多级检索与多智能体编排解决跨文档、多步推理问题。</p>
+            <div class="compact-metrics"><span><b>0.82</b> F1</span><span><b>1,005</b> 实体</span></div>
+            <span class="entry-more">查看架构与评测结果 <span aria-hidden="true">↗</span></span>
+          </button>
+        </li>
+
+        <li class="timeline-item reveal" data-kind="opensource" id="opensource">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <button class="timeline-card opensource-timeline-card evowork-card" type="button" data-detail="evowork" aria-label="查看 EvoWork 开源项目详情">
+            <div class="card-topline"><span>开源项目</span><span class="category-pill">核心作者</span></div>
+            <h3>EvoWork</h3>
+            <p class="card-subtitle">Self-improving Agent Framework · Runtime / Memory / Skills / Eval / Safety</p>
+            <p>从零实现五大子系统，打通评测驱动、失败归因、技能进化与回归验证的 Agent 自改进闭环。</p>
+            <div class="evo-loop-mini" aria-label="EvoWork 自改进闭环">
+              <span><b>评测驱动</b>固定任务集</span><span><b>失败归因</b>轨迹分析</span>
+              <span><b>技能进化</b>生成提案</span><span><b>回归门控</b>沙箱验证</span>
+            </div>
+            <div class="compact-metrics compact-metrics-three"><span><b>−45%</b> LLM 轮次</span><span><b>−54%</b> Token</span><span><b>+28pp</b> 成功率</span></div>
+            <div class="topic-row"><span>Runtime</span><span>Memory</span><span>Skill Evolution</span><span>Eval & Safety</span></div>
+            <span class="entry-more">查看系统设计与评测结果 <span aria-hidden="true">↗</span></span>
+          </button>
+        </li>
+
+        <li class="timeline-item reveal" data-kind="opensource">
+          <span class="timeline-dot" aria-hidden="true"></span>
+          <button class="timeline-card opensource-timeline-card" type="button" data-detail="workbuddy" aria-label="查看 learn-workbuddy 开源贡献详情">
+            <div class="card-topline"><span>持续维护</span><span class="category-pill">开源项目 · 核心作者</span></div>
+            <h3>learn-workbuddy</h3>
+            <p class="card-subtitle">adongwanai / learn-workbuddy</p>
+            <p>主导 Agent Harness、分层 Memory 与 RAG/Context 关键章节设计与实现。</p>
+            <div class="architecture-mini" aria-hidden="true">
+              <span><b>Loop</b>有界运行</span><i></i><span><b>Memory</b>分层恢复</span><i></i><span><b>RAG</b>检索回归</span>
+            </div>
+            <div class="topic-row"><span>Harness</span><span>Memory</span><span>RAG / Context</span></div>
+            <span class="entry-more">查看我的贡献与仓库链接 <span aria-hidden="true">↗</span></span>
+          </button>
+        </li>
+      </ol>
     </section>
 
-    <section class="support-section reveal-on-scroll" id="stack" aria-labelledby="stack-title">
+    <section class="support-section reveal" id="stack" aria-labelledby="stack-title">
       <header class="support-heading"><p class="section-kicker">Skills</p><h2 id="stack-title">专业技能</h2></header>
-      <div class="capability-list" id="skills-grid"></div>
+      <div class="capability-list">
+        <article><p>Agent & Harness</p><h3>Agent 与 Harness 工程</h3><ul><li>Agent Loop</li><li>ReAct</li><li>Tool Use</li><li>Subagent / Multi-Agent</li><li>状态机与任务编排</li><li>MCP 开发与集成</li></ul></article>
+        <article><p>Memory & Context</p><h3>Memory 与 Context Engineering</h3><ul><li>短期 / 长期记忆</li><li>Episodic / Semantic</li><li>混合检索</li><li>KV / 前缀缓存</li><li>Stable / Dynamic Prompt</li><li>主动压缩</li></ul></article>
+        <article><p>RAG & Evaluation</p><h3>RAG 与评测</h3><ul><li>Agentic RAG</li><li>RRF</li><li>Cross-Encoder Rerank</li><li>LLM-as-Judge</li><li>EM / F1</li><li>检索精确率</li><li>隔离测试集</li></ul></article>
+        <article><p>Engineering</p><h3>工程能力</h3><ul><li>Python</li><li>FastAPI</li><li>LangGraph</li><li>Docker</li><li>Git</li><li>Neo4j</li><li>Qdrant</li></ul></article>
+      </div>
     </section>
 
-    <section class="support-section reveal-on-scroll" id="honors" aria-labelledby="honors-title">
-      <header class="support-heading"><p class="section-kicker">Honors</p><h2 id="honors-title">荣誉与成果</h2></header>
-      <div class="honor-list" id="achievement-grid"></div>
+    <section class="support-section reveal" id="honors" aria-labelledby="honors-title">
+      <header class="support-heading"><p class="section-kicker">Honors</p><h2 id="honors-title">荣誉与研究训练</h2></header>
+      <div class="honor-list">
+        <span><i>竞赛</i>研究生网络安全创新大赛国家一等奖</span>
+        <span><i>实验室</i>NSTL 三星级“项目之星”</span>
+        <span><i>奖学金</i>电子科技大学优秀学生一等奖学金</span>
+        <span><i>本科</i>浙江省优秀毕业生</span>
+        <span><i>研究论文</i>AHEAD · AAAI 2027 一作在投</span>
+        <span><i>工程实践</i>大疆车载 AI 座舱 Agent 核心研发</span>
+      </div>
     </section>
   </main>
 
@@ -69,14 +224,14 @@
     <div class="contact-heading">
       <p class="section-kicker">Contact</p>
       <h2>联系我</h2>
-      <p>电子科技大学计算机硕士 · 关注 Agent Harness、长期记忆与自动化评测</p>
+      <p>电子科技大学计算机硕士 · 聚焦 Agent Harness、长期记忆与自动化评测</p>
     </div>
     <div class="contact-links">
-      <a id="email-link"><span>邮箱</span><strong id="email-text"></strong><i aria-hidden="true">↗</i></a>
-      <a id="phone-link"><span>电话</span><strong id="phone-text"></strong><i aria-hidden="true">↗</i></a>
-      <a id="github-link" target="_blank" rel="noreferrer"><span>个人 GitHub 主页</span><strong>KEDADA</strong><i aria-hidden="true">↗</i></a>
+      <a href="mailto:wangketing0513@163.com"><span>邮箱</span><strong>wangketing0513@163.com</strong><i aria-hidden="true">↗</i></a>
+      <a href="tel:+8618358268740"><span>电话</span><strong>183 5826 8740</strong><i aria-hidden="true">↗</i></a>
+      <a href="https://github.com/KEDADA?tab=repositories" target="_blank" rel="noreferrer"><span>个人 GitHub 主页</span><strong>KEDADA</strong><i aria-hidden="true">↗</i></a>
     </div>
-    <p class="copyright">© <span id="copyright-year"></span> 汪柯廷</p>
+    <p class="copyright">© 2026 汪柯廷</p>
   </footer>
 
   <div class="modal-backdrop" id="detail-backdrop" hidden>
@@ -86,7 +241,11 @@
     </section>
   </div>
 
-  <script src="./data.js"></script>
+  <div class="image-viewer" id="image-viewer" hidden role="dialog" aria-modal="true" aria-label="论文首页大图">
+    <button class="viewer-close" type="button" aria-label="关闭大图">×</button>
+    <img id="viewer-image" alt="">
+  </div>
+
   <script src="./app.js" defer></script>
 </body>
 </html>
