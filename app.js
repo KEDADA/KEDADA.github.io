@@ -4,13 +4,14 @@ const details = {
     meta: "教育 · 2024.09—2027.06",
     title: "电子科技大学",
     subtitle: "计算机科学与技术硕士 · 全日制",
-    lead: "围绕 Agent Harness、Agent Memory 与 RAG 评测体系开展研究和工程实践。",
-    tags: ["Agent Harness", "Agent Memory", "Context Engineering", "自动化评测"],
-    role: "计算机硕士研究生",
-    background: "在电子科技大学计算机科学与工程学院 NSTL 实验室学习，聚焦可靠、可评测、可进化的 Agent 系统。",
+    lead: "围绕 Agent Harness、Agent Memory 与 Agent 评测体系开展研究和工程实践，聚焦 ViT 对抗样本攻击检测展开科研工作。",
+    tags: ["Agent Harness", "Agent Memory", "Agent 评测", "ViT 对抗样本检测"],
+    role: "计算机硕士研究生 / 班级团支书",
+    background: "在电子科技大学计算机科学与工程学院 NSTL 实验室学习，围绕 Agent Harness、Agent Memory 与 Agent 评测体系开展研究和工程实践，并聚焦 ViT 对抗样本攻击检测展开科研工作。",
     contributions: [
       "主要方向为 Agent Harness、Agent Memory 与 Context Engineering。",
       "围绕固定评测集、结构化轨迹与可回归迭代机制开展实践。",
+      "聚焦 ViT 对抗样本攻击检测开展科研工作，研究冻结注意力头中的高效检测信号。",
       "获得优秀学生一等奖学金与 NSTL 三星级项目之星。"
     ],
     approach: ["系统问题拆解与方案设计", "可复现评测与误差分析", "工程实现与结果表达"]
@@ -22,7 +23,7 @@ const details = {
     subtitle: "软件工程本科 · 全日制",
     lead: "以软件工程与 AI 实践为起点，完成系统训练并持续探索智能应用开发。",
     tags: ["软件工程", "AI 应用", "省优毕"],
-    role: "本科生",
+    role: "软件工程本科生 / 班长",
     background: "本科阶段系统学习软件工程、算法与智能应用开发，通过竞赛与项目训练建立完整工程能力。",
     metrics: [
       { value: "浙江省优秀毕业生", label: "毕业荣誉" },
@@ -234,13 +235,13 @@ const details = {
     quote: "让检索结果形成可追踪的证据结构，而不是一组彼此孤立的文本块。"
   },
   evowork: {
-    kind: "opensource",
-    meta: "开源项目 · 核心作者",
+    kind: "project",
+    meta: "个人项目 · 独立实现",
     title: "EvoWork",
     subtitle: "Self-improving Agent Framework · Runtime / Memory / Skills / Eval / Safety",
     lead: "从零实现 Runtime、Memory、Skills 自进化、Eval 与安全五大子系统，打通评测驱动、失败归因、技能进化与回归验证的 Agent 自改进闭环。",
     tags: ["Advanced Runtime", "Layered Memory", "Skill Evolution", "Eval & Safety"],
-    role: "核心作者 / 系统设计与独立实现",
+    role: "独立开发者 / 系统设计与实现",
     background: "传统 Agent Loop 往往把工具调度、上下文、评测和权限揉进核心循环：新增工具需要改动主流程，长任务上下文持续膨胀，失败也难以沉淀成可验证的改进。EvoWork 将运行、记忆、进化、评测与安全拆成可独立演进的子系统。",
     flow: [
       { title: "评测驱动", text: "固定任务集与隔离测试集暴露稳定失败" },
@@ -255,17 +256,14 @@ const details = {
       { value: "52% → 80%", label: "6 轮技能进化后任务成功率" }
     ],
     contributions: [
-      "系统设计：独立从零实现 Runtime、Memory、Skills 自进化、Eval 与安全五大子系统，形成从评测到回归验证的完整闭环。",
-      "Runtime 与工具调度：以 Dispatch Table 动态注册、Batch Tool Calling 和 Interrupt 中断恢复扩展 Agent Loop；新增工具平均约 30 行接入且不侵入核心循环。在 120 任务 × 3 轮评测中，LLM 交互轮次降低 45%，端到端耗时降低 38%。",
-      "Memory 与 Context Engineering：构建 Episodic JSONL + SemanticVector 双层记忆，以及 Context 四操作主动压缩策略。在 80 组平均 40+ 轮长程任务 × 5 次评测中，单任务 Token 从 12.3k 降至 5.6k，成功率从 71% 提升至 76%。",
-      "Eval 驱动的技能自进化：搭建轨迹分析、失败归因、技能提案、沙箱回归与用户确认集成流程，以 60 Case 隔离测试集进行成功率门控。6 轮迭代后成功率从 52% 提升至 80%，失败自动归因覆盖率 85%，技能提案回归通过率 60%。",
-      "安全与权限：实现三级权限模型、Dry-run 副作用预览与成本守卫；拦截全部预设高危操作，单任务成本上限 $0.5，评测期间越权调用 0 次。"
+      "独立实现 Runtime、Memory、Skills 自进化、Eval 与安全五大子系统。",
+      "以动态工具注册、批量调用与中断恢复构建可扩展 Agent Runtime。",
+      "通过失败归因、技能提案、沙箱回归和用户确认形成自改进闭环。"
     ],
     approach: [
-      "Dispatch Table 将工具发现、Schema 与执行器从 Agent Loop 解耦；Batch Tool Calling 合并无依赖调用，Interrupt 保存可恢复状态。",
-      "Episodic JSONL 保留可回放事件，SemanticVector 负责语义召回；Context 四操作按任务阶段主动控制上下文规模。",
-      "所有技能提案先进入隔离沙箱，只有通过固定回归集且得到用户确认后才集成，避免自进化直接污染生产技能。",
-      "权限、Dry-run 与成本守卫位于统一执行边界，在工具真正产生副作用前完成校验。"
+      "Dispatch Table 解耦工具发现与执行，Batch Tool Calling 合并无依赖调用。",
+      "双层记忆结合主动压缩，控制长任务上下文规模。",
+      "技能变更先通过隔离回归与安全检查，再由用户确认集成。"
     ],
     star: {
       S: "传统 Agent Loop 扩展性差，工具调度、长上下文、失败归因和权限控制相互耦合，改进难以被稳定验证。",
